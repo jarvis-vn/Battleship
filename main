@@ -1,0 +1,672 @@
+## Module 0.a
+##====================================================================================================================================================================================
+playagain = True
+while playagain == True:
+## Module 1
+##====================================================================================================================================================================================
+    print('New game!')
+    matrixuser = [[[' ' for length in range(34)] for width in range(16)] for depth in range(2)]
+    print('\nThe User\'s Board')
+    print('\n   1   2   3   4   5   6   7   8\n')
+    for depth in range(2):
+        if depth == 0:
+            print('Underwater')
+            for length in range(16):
+                if length % 2 == False:
+                    matrixuser[depth][length][0] = str(int(length/2)+1)
+                for width in range(2,34):
+                    if width % 4 == True:
+                        matrixuser[depth][length][width] = '|'
+                for width in range(3,34):
+                    if length % 2 == True:
+                        matrixuser[depth][length][width] = '-'
+        else:
+            print('Surface')
+            for length in range(16):
+                if length % 2 == False:
+                    matrixuser[depth][length][0] = str(int(length/2)+1)
+                for width in range(2,34):
+                    if width % 4 == True:
+                        matrixuser[depth][length][width] = '|'
+                for width in range(3,34):
+                    if length % 2 == True:
+                        matrixuser[depth][length][width] = '-'  
+        for depthrow in matrixuser[depth]:
+            print(''.join(depthrow))
+## Module 2
+##====================================================================================================================================================================================
+    print('\nPlace a Submarine')
+    print('\nPlease enter the coordinates following this format: 3,4,1 where Length = 3, Width = 4, and Depth = 1.')
+    print('Note: Depth = 0 represents the Underwater layer, while Depth = 1 represents the Surface level.')
+    submarinecoordinates = input('\nEnter the coordinates to place the Submarine: ')
+    formatissues = True
+    positionissues = True
+    while formatissues == True or positionissues == True:
+        formatissues = False
+        positionissues = False
+        if len(''.join(submarinecoordinates.split())) != 5:
+            formatissues = True
+        else:
+            for char in range(len(''.join(submarinecoordinates.split()))):
+                if char % 2 == True:
+                    if ord((''.join(submarinecoordinates.split()))[char]) != 44:
+                        formatissues = True
+                else:
+                    if char != 4:               
+                        if ord((''.join(submarinecoordinates.split()))[char]) < 49 or ord((''.join(submarinecoordinates.split()))[char]) > 56:
+                            formatissues = True
+                        else:
+                            if char == 0:
+                                if ord((''.join(submarinecoordinates.split()))[char]) > 54 and ord((''.join(submarinecoordinates.split()))[char+2]) > 54:
+                                    positionissues = True                    
+                    else:
+                        if ord((''.join(submarinecoordinates.split()))[char]) < 48 or ord((''.join(submarinecoordinates.split()))[char]) > 49:
+                            formatissues = True
+        if formatissues == True:
+            print('\nCoordinates format incorrect!\nPlease enter the coordinates following this format: 3,4,1 where Length = 3, Width = 4, and Depth = 1.')
+            submarinecoordinates = input('\nEnter the coordinates to place the Submarine: ')
+        elif positionissues == True:
+            print('\nPosition is not allowed!\nPlease enter a coordinate where a valid orientation is allowed.')
+            submarinecoordinates = input('\nEnter the coordinates to place the Submarine: ')        
+        else:   
+            submarineorientation = input('Vertically or horizontally orientate the Submarine (V, H)?: ')
+            orientationissues = True
+            while orientationissues == True:
+                orientationissues = False
+                if len(''.join(submarineorientation.split())) != 1:
+                    orientationissues = True
+                else:
+                    if submarineorientation != 'H' and submarineorientation != 'V':
+                        orientationissues = True
+                    else:
+                        if submarineorientation == 'H':                
+                            if ord((''.join(submarinecoordinates.split()))[2]) > 54:
+                                orientationissues = True
+                        else:
+                            if ord((''.join(submarinecoordinates.split()))[0]) > 54:
+                                orientationissues = True
+                if orientationissues == True:
+                    print('\nOrientation is not allowed!\nPlease enter an orientation where such an orientation is allowed.')
+                    submarineorientation = input('\nVertically or horizontally orientate the Submarine (V, H)?: ')
+                else:
+                    break
+## Module 3                
+##====================================================================================================================================================================================
+    print('\nThe User\'s Board')
+    print('\n   1   2   3   4   5   6   7   8\n')
+    for depth in range(2):
+        if depth == 0:
+            print('Underwater')
+            for length in range(16):
+                if length % 2 == False:
+                    matrixuser[depth][length][0] = str(int(length/2)+1)
+                for width in range(2,34):
+                    if width % 4 == True:
+                        matrixuser[depth][length][width] = '|'
+                for width in range(3,34):
+                    if length % 2 == True:
+                        matrixuser[depth][length][width] = '-'
+        else:
+            print('Surface')
+            for length in range(16):
+                if length % 2 == False:
+                    matrixuser[depth][length][0] = str(int(length/2)+1)
+                for width in range(2,34):
+                    if width % 4 == True:
+                        matrixuser[depth][length][width] = '|'
+                for width in range(3,34):
+                    if length % 2 == True:
+                        matrixuser[depth][length][width] = '-'
+        if int((''.join(submarinecoordinates.split()))[4]) == 0:
+            matrixuser[0][(int(''.join(submarinecoordinates.split())[0])-1)*2][3+4*(((int(''.join(submarinecoordinates.split())[2])-1)))] = 'S'
+            if submarineorientation == 'H':
+                matrixuser[0][(int(''.join(submarinecoordinates.split())[0])-1)*2][3+4*(((int(''.join(submarinecoordinates.split())[2]))))] = 'S'
+                matrixuser[0][(int(''.join(submarinecoordinates.split())[0])-1)*2][3+4*(((int(''.join(submarinecoordinates.split())[2])+1)))] = 'S'
+            else:
+                matrixuser[0][(int(''.join(submarinecoordinates.split())[0]))*2][3+4*(((int(''.join(submarinecoordinates.split())[2])-1)))] = 'S'
+                matrixuser[0][(int(''.join(submarinecoordinates.split())[0])+1)*2][3+4*(((int(''.join(submarinecoordinates.split())[2])-1)))] = 'S'
+        else:
+            matrixuser[1][(int(''.join(submarinecoordinates.split())[0])-1)*2][3+4*(((int(''.join(submarinecoordinates.split())[2])-1)))] = 'S'
+            if submarineorientation == 'H':
+                matrixuser[1][(int(''.join(submarinecoordinates.split())[0])-1)*2][3+4*(((int(''.join(submarinecoordinates.split())[2]))))] = 'S'
+                matrixuser[1][(int(''.join(submarinecoordinates.split())[0])-1)*2][3+4*(((int(''.join(submarinecoordinates.split())[2])+1)))] = 'S'
+            else:
+                matrixuser[1][(int(''.join(submarinecoordinates.split())[0]))*2][3+4*(((int(''.join(submarinecoordinates.split())[2])-1)))] = 'S'
+                matrixuser[1][(int(''.join(submarinecoordinates.split())[0])+1)*2][3+4*(((int(''.join(submarinecoordinates.split())[2])-1)))] = 'S'
+        for depthrow in matrixuser[depth]:
+            print(''.join(depthrow))
+## Module 4            
+##====================================================================================================================================================================================
+    print('\nDone placing the User\'s Submarine.')
+    inputenterformatissues = True
+    while inputenterformatissues == True:
+        inputenterformatissues = False
+        inputenter = input('Hit \'ENTER\' to continue.')
+        if len(inputenter) != 0:
+            inputenterformatissues = True
+        if inputenterformatissues == False:
+            break
+## Module 5        
+##====================================================================================================================================================================================
+    print('\nPlace a Destroyer')
+    print('\nPlease enter the coordinates following this format: 3,4,1 where Length = 3, Width = 4, and Depth = 1.')
+    print('Note: Depth = 1 represents the Surface level. The Destroyer can only be placed at the Surface level.')
+    destroyercoordinates = input('\nEnter the coordinates to place the Destroyer: ')
+    formatissues = True
+    positionissues = True
+    while formatissues == True or positionissues == True:
+        formatissues = False
+        positionissues = False
+        if len(''.join(destroyercoordinates.split())) != 5:
+            formatissues = True
+        else:
+            for char in range(len(''.join(destroyercoordinates.split()))):
+                if char % 2 == True:
+                    if ord((''.join(destroyercoordinates.split()))[char]) != 44:
+                        formatissues = True
+                else:                
+                    if char != 4:
+                        if ord((''.join(destroyercoordinates.split()))[char]) < 49 or ord((''.join(destroyercoordinates.split()))[char]) > 56:
+                            formatissues = True
+                        else:
+                            if char == 0:
+                                if ord((''.join(destroyercoordinates.split()))[char]) > 54 and ord((''.join(destroyercoordinates.split()))[char+2]) > 54:
+                                    positionissues = True
+                    else:                        
+                        if ord((''.join(destroyercoordinates.split()))[char]) != 49:
+                            formatissues = True
+                        else:
+                            if ord((''.join(destroyercoordinates.split()))[char]) == ord((''.join(submarinecoordinates.split()))[char]):
+                                if submarineorientation == 'H':
+                                    if ord((''.join(destroyercoordinates.split()))[0]) == ord((''.join(submarinecoordinates.split()))[0]):
+                                        if ord((''.join(destroyercoordinates.split()))[2]) == ord((''.join(submarinecoordinates.split()))[2]) or ord((''.join(destroyercoordinates.split()))[2]) == ord((''.join(submarinecoordinates.split()))[2])+1 or ord((''.join(destroyercoordinates.split()))[2]) == ord((''.join(submarinecoordinates.split()))[2])+2:
+                                            positionissues = True
+                                else:
+                                    if ord((''.join(destroyercoordinates.split()))[2]) == ord((''.join(submarinecoordinates.split()))[2]) and abs(ord((''.join(destroyercoordinates.split()))[0]) - ord((''.join(submarinecoordinates.split()))[0])) < 3:
+                                        if ord((''.join(destroyercoordinates.split()))[0]) == ord((''.join(submarinecoordinates.split()))[0]) or ord((''.join(destroyercoordinates.split()))[0]) == ord((''.join(submarinecoordinates.split()))[0])+1 or ord((''.join(destroyercoordinates.split()))[0]) == ord((''.join(submarinecoordinates.split()))[0])+2:
+                                            positionissues = True                 
+        if formatissues == True:
+            print('\nCoordinates format incorrect!\nPlease enter the coordinates following this format: 3,4,1 where Length = 3, Width = 4, and Depth = 1.')
+            destroyercoordinates = input('\nEnter the coordinates to place the Destroyer: ')
+        elif positionissues == True:
+            print('\nPosition is not allowed!\nPlease enter a coordinate where a valid orientation is allowed.')
+            destroyercoordinates = input('\nEnter the coordinates to place the Destroyer: ')
+        else:
+            destroyerorientation = input('Vertically or horizontally orientate the Destroyer (V, H)?: ')
+            orientationissues = True
+            while orientationissues == True:
+                orientationissues = False                      
+                if len(''.join(destroyerorientation.split())) != 1:
+                    orientationissues = True
+                else:
+                    if destroyerorientation != 'H' and destroyerorientation != 'V':
+                        orientationissues = True
+                    else:
+                        if destroyerorientation == 'H':             
+                            if ord((''.join(destroyercoordinates.split()))[2]) > 54:
+                                orientationissues = True
+                            else:
+                                if matrixuser[1][(int(''.join(destroyercoordinates.split())[0])-1)*2][3+4*(((int(''.join(destroyercoordinates.split())[2]))))] == 'S':
+                                    orientationissues = True
+                                elif matrixuser[1][(int(''.join(destroyercoordinates.split())[0])-1)*2][3+4*(((int(''.join(destroyercoordinates.split())[2])+1)))] == 'S':
+                                   orientationissues = True                                    
+                        else:
+                            if ord((''.join(destroyercoordinates.split()))[0]) > 54:
+                                orientationissues = True
+                            else:
+                                if matrixuser[1][(int(''.join(destroyercoordinates.split())[0]))*2][3+4*(((int(''.join(destroyercoordinates.split())[2])-1)))] == 'S':
+                                    orientationissues = True
+                                elif matrixuser[1][(int(''.join(destroyercoordinates.split())[0])+1)*2][3+4*(((int(''.join(destroyercoordinates.split())[2])-1)))] == 'S':
+                                   orientationissues = True   
+                if orientationissues == True:
+                    print('Orientation is not allowed!\nPlease enter an orientation where such an orientation is allowed.')
+                    destroyerorientation = input('\nVertically or horizontally orientate the Destroyer (V, H)?: ')
+                else:
+                    break
+## Module 6                
+##====================================================================================================================================================================================
+    print('\nThe User\'s Board')
+    print('\n   1   2   3   4   5   6   7   8\n')
+    for depth in range(2):
+        if depth == 0:
+            print('Underwater')
+            for length in range(16):
+                if length % 2 == False:
+                    matrixuser[depth][length][0] = str(int(length/2)+1)
+                for width in range(2,34):
+                    if width % 4 == True:
+                        matrixuser[depth][length][width] = '|'
+                for width in range(3,34):
+                    if length % 2 == True:
+                        matrixuser[depth][length][width] = '-'
+        else:
+            print('Surface')
+            for length in range(16):
+                if length % 2 == False:
+                    matrixuser[depth][length][0] = str(int(length/2)+1)
+                for width in range(2,34):
+                    if width % 4 == True:
+                        matrixuser[depth][length][width] = '|'
+                for width in range(3,34):
+                    if length % 2 == True:
+                        matrixuser[depth][length][width] = '-'                    
+        matrixuser[1][(int(''.join(destroyercoordinates.split())[0])-1)*2][3+4*(((int(''.join(destroyercoordinates.split())[2])-1)))] = 'D'
+        if destroyerorientation == 'H':
+            matrixuser[1][(int(''.join(destroyercoordinates.split())[0])-1)*2][3+4*(((int(''.join(destroyercoordinates.split())[2]))))] = 'D'
+            matrixuser[1][(int(''.join(destroyercoordinates.split())[0])-1)*2][3+4*(((int(''.join(destroyercoordinates.split())[2])+1)))] = 'D'
+        else:
+            matrixuser[1][(int(''.join(destroyercoordinates.split())[0]))*2][3+4*(((int(''.join(destroyercoordinates.split())[2])-1)))] = 'D'
+            matrixuser[1][(int(''.join(destroyercoordinates.split())[0])+1)*2][3+4*(((int(''.join(destroyercoordinates.split())[2])-1)))] = 'D'
+        for depthrow in matrixuser[depth]:
+            print(''.join(depthrow))
+## Module 7            
+##====================================================================================================================================================================================
+    print('\nDone placing the User\'s Destroyer.')
+    print('Done placing the User\'s Ships.')
+    inputenterformatissues = True
+    while inputenterformatissues == True:
+        inputenterformatissues = False
+        inputenter = input('Hit \'ENTER\' to continue.')
+        if len(inputenter) != 0:
+            inputenterformatissues = True
+        if inputenterformatissues == False:
+            break
+## Module 8        
+##====================================================================================================================================================================================
+    print('\nComputer is placing a Submarine.')
+    import random
+    computerorientationissues = True
+    while computerorientationissues == True:
+        computerorientationissues = False    
+        computerdepthsubmarine = random.choice([0, 1])
+        computerlengthsubmarine = random.randint(1, 8)
+        computerwidthsubmarine = random.randint(1, 8)
+        computersubmarineorientation = random.choice(['H', 'V'])
+        if computerlengthsubmarine > 6 and computerwidthsubmarine > 6:
+            computerorientationissues = True
+        else:
+            if computersubmarineorientation == 'H':                
+                if computerwidthsubmarine > 6:
+                    computerorientationissues = True
+            else:
+                if computerlengthsubmarine > 6:
+                    computerorientationissues = True
+        if computerorientationissues == False:       
+            break
+## Module 9        
+##====================================================================================================================================================================================    
+    matrixcomputer = [[[' ' for length in range(34)] for width in range(16)] for depth in range(2)]
+    for depth in range(2):                  
+        if computerdepthsubmarine == 0:
+            matrixcomputer[0][(computerlengthsubmarine-1)*2][3+4*(computerwidthsubmarine-1)] = 'S'
+            if computersubmarineorientation == 'H':
+                matrixcomputer[0][(computerlengthsubmarine-1)*2][3+4*computerwidthsubmarine] = 'S'
+                matrixcomputer[0][(computerlengthsubmarine-1)*2][3+4*(computerwidthsubmarine+1)] = 'S'
+            else:                                                     
+                matrixcomputer[0][computerlengthsubmarine*2][3+4*(computerwidthsubmarine-1)] = 'S'
+                matrixcomputer[0][(computerlengthsubmarine+1)*2][3+4*(computerwidthsubmarine-1)] = 'S'
+            
+        else:
+            matrixcomputer[1][(computerlengthsubmarine-1)*2][3+4*(computerwidthsubmarine-1)] = 'S'
+            if computersubmarineorientation == 'H':
+                matrixcomputer[1][(computerlengthsubmarine-1)*2][3+4*computerwidthsubmarine] = 'S'
+                matrixcomputer[1][(computerlengthsubmarine-1)*2][3+4*(computerwidthsubmarine+1)] = 'S'
+            else:                                                     
+                matrixcomputer[1][computerlengthsubmarine*2][3+4*(computerwidthsubmarine-1)] = 'S'
+                matrixcomputer[1][(computerlengthsubmarine+1)*2][3+4*(computerwidthsubmarine-1)] = 'S'
+    print('Done placing the Computer\'s Submarine.')
+## Module 10
+##====================================================================================================================================================================================        
+    print('Computer is placing a Destroyer.')
+    import random
+    computerorientationissues = True
+    while computerorientationissues == True:
+        computerorientationissues = False
+        computerdepthdestroyer = 1
+        computerlengthdestroyer = random.randint(1, 8)
+        computerwidthdestroyer = random.randint(1, 8)
+        computerdestroyerorientation = random.choice(['H', 'V'])
+        if computerlengthdestroyer > 6 and computerwidthdestroyer > 6:
+            computerorientationissues = True
+        else:
+            if computerdestroyerorientation == 'H':                
+                if computerwidthdestroyer > 6:
+                    computerorientationissues = True
+                else:
+                    if computerdepthsubmarine == 1:
+                        if computerlengthdestroyer == computerlengthsubmarine or computerlengthdestroyer == computerlengthsubmarine+1 or computerlengthdestroyer == computerlengthsubmarine+2:
+                            computerorientationissues = True
+                        else:
+                            if matrixcomputer[1][(computerlengthdestroyer-1)*2][3+4*computerwidthdestroyer] == 'S':
+                                computerorientationissues = True
+                            elif matrixcomputer[1][(computerlengthdestroyer-1)*2][3+4*(computerwidthdestroyer+1)] == 'S':
+                                computerorientationissues = True                                
+            else:
+                if computerlengthdestroyer > 6:
+                    computerorientationissues = True
+                else:
+                    if computerdepthsubmarine == 1:
+                        if computerwidthdestroyer == computerwidthsubmarine or computerwidthdestroyer == computerwidthsubmarine+1 or computerwidthdestroyer == computerwidthsubmarine+2:
+                            computerorientationissues = True
+                        else:
+                            if matrixcomputer[1][computerlengthdestroyer*2][3+4*(computerwidthdestroyer-1)] == 'S':
+                                computerorientationissues = True
+                            elif matrixcomputer[1][(computerlengthdestroyer+1)*2][3+4*(computerwidthdestroyer-1)] == 'S':
+                                computerorientationissues = True                     
+        if computerorientationissues == False:       
+            break
+## Module 11
+##====================================================================================================================================================================================                   
+    matrixcomputer[1][(computerlengthdestroyer-1)*2][3+4*(computerwidthdestroyer-1)] = 'D'
+    if computerdestroyerorientation == 'H':
+        matrixcomputer[1][(computerlengthdestroyer-1)*2][3+4*computerwidthdestroyer] = 'D'
+        matrixcomputer[1][(computerlengthdestroyer-1)*2][3+4*(computerwidthdestroyer+1)] = 'D'
+    else:
+        matrixcomputer[1][computerlengthdestroyer*2][3+4*(computerwidthdestroyer-1)] = 'D'
+        matrixcomputer[1][(computerlengthdestroyer+1)*2][3+4*(computerwidthdestroyer-1)] = 'D'
+    print('Done placing the Computer\'s Destroyer.')
+    print('Done placing the Computer\'s Ships.')
+## Module 12    
+##====================================================================================================================================================================================                   
+    showmatrixcomputerforassessment = False
+    while showmatrixcomputerforassessment == False:
+        showmatrixcomputerforassessment = True
+        computersmatrix = input('[For Assessment Only] Show the Computer\'s ship placements? Enter \'Y\' for yes, or \'N\' for no: ')
+        if computersmatrix != 'Y' and computersmatrix != 'N':
+            showmatrixcomputerforassessment = False                
+        if computersmatrix == 'Y' and showmatrixcomputerforassessment == True:
+            print('\nThe Computer\'s Board')
+            print('\n   1   2   3   4   5   6   7   8\n')
+            for depth in range(2):
+                if depth == 0:
+                    print('Underwater')
+                    for length in range(16):
+                        if length % 2 == False:
+                            matrixcomputer[depth][length][0] = str(int(length/2)+1)
+                        for width in range(2,34):
+                            if width % 4 == True:
+                                matrixcomputer[depth][length][width] = '|'
+                        for width in range(3,34):
+                            if length % 2 == True:
+                                matrixcomputer[depth][length][width] = '-'
+                else:
+                    print('Surface')
+                    for length in range(16):
+                        if length % 2 == False:
+                            matrixcomputer[depth][length][0] = str(int(length/2)+1)
+                        for width in range(2,34):
+                            if width % 4 == True:
+                                matrixcomputer[depth][length][width] = '|'
+                        for width in range(3,34):
+                            if length % 2 == True:
+                                matrixcomputer[depth][length][width] = '-'                    
+                for depthrow in matrixcomputer[depth]:
+                    print(''.join(depthrow))
+            break
+        elif computersmatrix == 'N' and showmatrixcomputerforassessment == True:
+            break
+## Module 13        
+##====================================================================================================================================================================================                   
+    print('\nReady to start the game.')
+    inputenterformatissues = True
+    while inputenterformatissues == True:
+        inputenterformatissues = False
+        inputenter = input('Hit \'ENTER\' to continue.')
+        if len(inputenter) != 0:
+            inputenterformatissues = True
+        if inputenterformatissues == False:
+            break
+## Module 14        
+##====================================================================================================================================================================================
+    print('\nThe Computer\'s Board')
+    matrixcomputerinplay = [[[' ' for length in range(34)] for width in range(16)] for depth in range(2)]
+    print('\n   1   2   3   4   5   6   7   8\n')
+    for depth in range(2):
+        if depth == 0:
+            print('Underwater')
+            for length in range(16):
+                if length % 2 == False:
+                    matrixcomputerinplay[depth][length][0] = str(int(length/2)+1)
+                for width in range(2,34):
+                    if width % 4 == True:
+                        matrixcomputerinplay[depth][length][width] = '|'
+                for width in range(3,34):
+                    if length % 2 == True:
+                        matrixcomputerinplay[depth][length][width] = '-'
+        else:
+            print('Surface')
+            for length in range(16):
+                if length % 2 == False:
+                    matrixcomputerinplay[depth][length][0] = str(int(length/2)+1)
+                for width in range(2,34):
+                    if width % 4 == True:
+                        matrixcomputerinplay[depth][length][width] = '|'
+                for width in range(3,34):
+                    if length % 2 == True:
+                        matrixcomputerinplay[depth][length][width] = '-'
+        for depthrow in matrixcomputerinplay[depth]:
+            print(''.join(depthrow))
+## Module 15.a          
+##====================================================================================================================================================================================
+    turn = 0
+    usersubmarineunitshit = 0
+    userdestroyerunitshit = 0
+    gameends = False
+    while gameends == False:
+        turn = turn + 1
+        if turn % 2 == 1:
+            print('\nUser\'s turn')
+            if turn > 1:
+                inputenterformatissues = True
+                while inputenterformatissues == True:
+                    inputenterformatissues = False
+                    inputenter = input('Hit \'ENTER\' to continue.')
+                    if len(inputenter) != 0:
+                        inputenterformatissues = True
+                    if inputenterformatissues == False:
+                        print('\nThe Computer\'s Board')
+                        print('\n   1   2   3   4   5   6   7   8\n')
+                        for depth in range(2):
+                            if depth == 0:
+                                print('Underwater')
+                                for length in range(16):
+                                    if length % 2 == False:
+                                        matrixcomputerinplay[depth][length][0] = str(int(length/2)+1)
+                                    for width in range(2,34):
+                                        if width % 4 == True:
+                                            matrixcomputerinplay[depth][length][width] = '|'
+                                    for width in range(3,34):
+                                        if length % 2 == True:
+                                            matrixcomputerinplay[depth][length][width] = '-'
+                            else:
+                                print('Surface')
+                                for length in range(16):
+                                    if length % 2 == False:
+                                        matrixcomputerinplay[depth][length][0] = str(int(length/2)+1)
+                                    for width in range(2,34):
+                                        if width % 4 == True:
+                                            matrixcomputerinplay[depth][length][width] = '|'
+                                    for width in range(3,34):
+                                        if length % 2 == True:
+                                            matrixcomputerinplay[depth][length][width] = '-'
+                            for depthrow in matrixcomputerinplay[depth]:
+                                print(''.join(depthrow))
+                        print('\nUser\'s turn')
+                        break
+## Module 15.b            
+##====================================================================================================================================================================================                    
+            print('\nPlease enter the coordinates following this format: 3,4,1 where Length = 3, Width = 4, and Depth = 1.')
+            print('Note: Depth = 0 represents the Underwater layer, while Depth = 1 represents the Surface level.')        
+            userattackcoordinates = input('Enter a coordinate to attack the Computer\'s ships: ')        
+            formatissues = True
+            while formatissues == True:
+                formatissues = False
+                if len(''.join(userattackcoordinates.split())) != 5:
+                    formatissues = True
+                else:
+                    for char in range(len(''.join(userattackcoordinates.split()))):
+                        if char % 2 == True:
+                            if ord((''.join(userattackcoordinates.split()))[char]) != 44:
+                                formatissues = True
+                        else:
+                            if char != 4:               
+                                if ord((''.join(userattackcoordinates.split()))[char]) < 49 or ord((''.join(userattackcoordinates.split()))[char]) > 56:
+                                    formatissues = True                    
+                            else:
+                                if ord((''.join(userattackcoordinates.split()))[char]) < 48 or ord((''.join(userattackcoordinates.split()))[char]) > 49:
+                                    formatissues = True
+                if formatissues == True:
+                    print('Coordinates format incorrect!\nPlease enter the coordinates following this format: 3,4,1 where Length = 3, Width = 4, and Depth = 1.')
+                    print('Note: Depth = 0 represents the Underwater layer, while Depth = 1 represents the Surface level.')        
+                    userattackcoordinates = input('Enter a coordinate to attack the Computer\'s ships: ')
+                else:
+                    computersubmarineunitshit = 0
+                    computerdestroyerunitshit = 0
+                    userattacksuccess = False                    
+                    for userattacklength in range(int((''.join(userattackcoordinates.split()))[0])-1, int((''.join(userattackcoordinates.split()))[0])+2):
+                        for userattackwidth in range(int((''.join(userattackcoordinates.split()))[2])-1, int((''.join(userattackcoordinates.split()))[2])+2):
+                            if 0 < userattacklength < 9 and 0 < userattackwidth < 9:
+                                if matrixcomputer[int((''.join(userattackcoordinates.split()))[4])][(userattacklength-1)*2][3+4*(userattackwidth-1)] == 'S':
+                                    matrixcomputerinplay[int((''.join(userattackcoordinates.split()))[4])][(userattacklength-1)*2][3+4*(userattackwidth-1)] = '$'                        
+                                    userattacksuccess = True
+                                elif matrixcomputer[int((''.join(userattackcoordinates.split()))[4])][(userattacklength-1)*2][3+4*(userattackwidth-1)] == 'D':
+                                    matrixcomputerinplay[int((''.join(userattackcoordinates.split()))[4])][(userattacklength-1)*2][3+4*(userattackwidth-1)] = '$'                        
+                                    userattacksuccess = True
+                                elif matrixcomputerinplay[int((''.join(userattackcoordinates.split()))[4])][(userattacklength-1)*2][3+4*(userattackwidth-1)] == '$':
+                                    matrixcomputerinplay[int((''.join(userattackcoordinates.split()))[4])][(userattacklength-1)*2][3+4*(userattackwidth-1)] = '$'                                    
+                                else:
+                                    matrixcomputerinplay[int((''.join(userattackcoordinates.split()))[4])][(userattacklength-1)*2][3+4*(userattackwidth-1)] = '*'                                               
+## Module 15.c
+##====================================================================================================================================================================================                    
+                    print('\nThe Computer\'s Board')
+                    print('\n   1   2   3   4   5   6   7   8\n')
+                    for depth in range(2):
+                        if depth == 0:
+                            print('Underwater')
+                            for length in range(16):
+                                if length % 2 == False:
+                                    matrixcomputerinplay[depth][length][0] = str(int(length/2)+1)
+                                for width in range(2,34):
+                                    if width % 4 == True:
+                                        matrixcomputerinplay[depth][length][width] = '|'
+                                for width in range(3,34):
+                                    if length % 2 == True:
+                                        matrixcomputerinplay[depth][length][width] = '-'
+                        else:
+                            print('Surface')
+                            for length in range(16):
+                                if length % 2 == False:
+                                    matrixcomputerinplay[depth][length][0] = str(int(length/2)+1)
+                                for width in range(2,34):
+                                    if width % 4 == True:
+                                        matrixcomputerinplay[depth][length][width] = '|'
+                                for width in range(3,34):
+                                    if length % 2 == True:
+                                        matrixcomputerinplay[depth][length][width] = '-'
+                        for depthrow in matrixcomputerinplay[depth]:
+                            print(''.join(depthrow))            
+## Module 15.d            
+##====================================================================================================================================================================================                    
+                    if userattacksuccess == True:
+                        print('\nHit at area centering',''.join(userattackcoordinates)+'.')
+                    elif userattacksuccess == False:
+                        print('\nAttack at area centering',userattackcoordinates,'is a total miss.')           
+                    for length in range(1,9):
+                        for width in range(1,9):
+                            for depth in range(0,2):
+                                if matrixcomputer[depth][(length-1)*2][3+4*(width-1)] == 'S' and matrixcomputerinplay[depth][(length-1)*2][3+4*(width-1)] == '$':
+                                    computersubmarineunitshit = computersubmarineunitshit + 1
+                            if matrixcomputer[1][(length-1)*2][3+4*(width-1)] == 'D' and matrixcomputerinplay[1][(length-1)*2][3+4*(width-1)] == '$':
+                                computerdestroyerunitshit = computerdestroyerunitshit + 1
+                    if int(computersubmarineunitshit) > 2:
+                        print('Computer\'s Submarine has been sunk.')
+                    if int(computerdestroyerunitshit) > 2:
+                        print('Computer\'s Destroyer has been sunk.')
+                    if int(computersubmarineunitshit+computerdestroyerunitshit) > 5:
+                        print('Computer has lost both its ships.')
+                        print('\nUser has won!')
+                        gameends = True                    
+        else:
+## Module 15.e            
+##====================================================================================================================================================================================                               
+            print('\nComputer\'s turn')
+            inputenterformatissues = True
+            while inputenterformatissues == True:
+                inputenterformatissues = False
+                inputenter = input('Hit \'ENTER\' to continue.')
+                if len(inputenter) != 0:
+                    inputenterformatissues = True
+                if inputenterformatissues == False:
+                    break            
+            computerattacklength = random.randint(1, 8)
+            computerattackwidth = random.randint(1, 8)
+            computerattackdepth = random.choice([0, 1])        
+            computerattacksuccess = False
+            for computerattacklengthcoordinate in range(computerattacklength-1, computerattacklength+2):
+                for computerattackwidthcoordinate in range(computerattackwidth-1, computerattackwidth+2):
+                    if 0 < computerattacklengthcoordinate < 9 and 0 < computerattackwidthcoordinate < 9:                    
+                        if matrixuser[computerattackdepth][(computerattacklengthcoordinate-1)*2][3+4*(computerattackwidthcoordinate-1)] == 'S':
+                            matrixuser[computerattackdepth][(computerattacklengthcoordinate-1)*2][3+4*(computerattackwidthcoordinate-1)] = '$'
+                            computerattacksuccess = True
+                            usersubmarineunitshit = usersubmarineunitshit + 1
+                        elif matrixuser[computerattackdepth][(computerattacklengthcoordinate-1)*2][3+4*(computerattackwidthcoordinate-1)] == 'D':
+                            matrixuser[computerattackdepth][(computerattacklengthcoordinate-1)*2][3+4*(computerattackwidthcoordinate-1)] = '$'                        
+                            computerattacksuccess = True
+                            userdestroyerunitshit = userdestroyerunitshit + 1                        
+                        elif matrixuser[computerattackdepth][(computerattacklengthcoordinate-1)*2][3+4*(computerattackwidthcoordinate-1)] == '$':
+                            matrixuser[computerattackdepth][(computerattacklengthcoordinate-1)*2][3+4*(computerattackwidthcoordinate-1)] = '$'                            
+                        else:
+                            matrixuser[computerattackdepth][(computerattacklengthcoordinate-1)*2][3+4*(computerattackwidthcoordinate-1)] = '*'
+## Module 15.f            
+##====================================================================================================================================================================================                    
+            print('\nThe User\'s Board')
+            print('\n   1   2   3   4   5   6   7   8\n')
+            for depth in range(2):
+                if depth == 0:
+                    print('Underwater')
+                    for length in range(16):
+                        if length % 2 == False:
+                            matrixuser[depth][length][0] = str(int(length/2)+1)
+                        for width in range(2,34):
+                            if width % 4 == True:
+                                matrixuser[depth][length][width] = '|'
+                        for width in range(3,34):
+                            if length % 2 == True:
+                                matrixuser[depth][length][width] = '-'
+                else:
+                    print('Surface')
+                    for length in range(16):
+                        if length % 2 == False:
+                            matrixuser[depth][length][0] = str(int(length/2)+1)
+                        for width in range(2,34):
+                            if width % 4 == True:
+                                matrixuser[depth][length][width] = '|'
+                        for width in range(3,34):
+                            if length % 2 == True:
+                                matrixuser[depth][length][width] = '-'
+                for depthrow in matrixuser[depth]:
+                    print(''.join(depthrow))              
+## Module 15.g            
+##====================================================================================================================================================================================                    
+            if computerattacksuccess == True:
+                print('\nHit at area centering',str(computerattacklength)+','+str(computerattackwidth)+','+str(computerattackdepth)+'.')
+            elif computerattacksuccess == False:
+                print('\nAttack at area centering',str(computerattacklength)+','+str(computerattackwidth)+','+str(computerattackdepth),'is a total miss.')
+            if int(usersubmarineunitshit) > 2:
+                print('User\'s Submarine has been sunk.')
+            if int(userdestroyerunitshit) > 2:
+                print('User\'s Destroyer has been sunk.')
+            if int(usersubmarineunitshit+userdestroyerunitshit) > 5:
+                print('User has lost both its ships.')
+                print('\nComputer has won!')
+                gameends = True                              
+        if gameends == True:
+            break
+## Module 0.b        
+##====================================================================================================================================================================================
+    playagaininput = input('\nDo you want to play again? Enter \'Y\' for yes, or \'N\' for no: ')
+    while playagaininput != 'Y' and playagaininput != 'N':        
+        playagaininput = input('Do you want to play again? Enter \'Y\' for yes, or \'N\' for no: ')
+    if playagaininput == 'N':
+        print('Thank you for playing!')
+        break
